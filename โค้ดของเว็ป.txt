@@ -1,0 +1,431 @@
+--โค้ดอันนี้สวยมาก--
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ระบบโพสต์แบบ Facebook</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+
+    .form-container {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .form-container:hover {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .form-container h3 {
+      text-align: center;
+      color: #1877f2;
+    }
+
+    .form-container label {
+      display: block;
+      margin: 10px 0 5px;
+      color: #555;
+    }
+
+    .form-container input[type="text"],
+    .form-container input[type="email"],
+    .form-container input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+    }
+
+    .form-container input[type="text"]:focus,
+    .form-container input[type="email"]:focus,
+    .form-container input[type="password"]:focus {
+      border-color: #1877f2;
+      outline: none;
+    }
+
+    .form-container button {
+      width: 100%;
+      background-color: #1877f2;
+      color: white;
+      padding: 12px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .form-container button:hover {
+      background-color: #165eab;
+    }
+
+    .form-container p {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    .logged-in {
+      text-align: center;
+    }
+
+    .logged-in h4 {
+      color: #1877f2;
+    }
+
+    .logged-in p {
+      font-size: 1.2rem;
+    }
+
+    .post {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .post:hover {
+      transform: scale(1.02);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .post-header strong {
+      font-size: 1.2rem;
+    }
+
+    .post-content {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #555;
+    }
+
+    .post-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+    }
+
+    .comment-form {
+      margin-top: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      padding: 15px;
+    }
+
+    .comment-form textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background-color: #fff;
+      transition: border 0.3s ease;
+    }
+
+    .comment-form textarea:focus {
+      border: 1px solid #1877f2;
+    }
+
+    .comment-form button {
+      background-color: #1877f2;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .comment-form button:hover {
+      background-color: #165eab;
+    }
+
+    .comments-section {
+      margin-top: 20px;
+    }
+
+    .comment {
+      background-color: #f1f3f5;
+      padding: 12px;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .create-post-form {
+      display: none;
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      margin-top: 30px;
+      transition: all 0.3s ease;
+    }
+
+    .create-post-form:hover {
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .create-post-form h5 {
+      font-size: 1.5rem;
+      margin-bottom: 20px;
+      color: #1877f2;
+    }
+
+    .create-post-form textarea {
+      width: 100%;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background-color: #f4f6f9;
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: #333;
+      margin-bottom: 20px;
+      box-sizing: border-box;
+      transition: border 0.3s ease;
+    }
+
+    .create-post-form textarea:focus {
+      border: 1px solid #1877f2;
+      background-color: #fff;
+    }
+
+    .create-post-form button {
+      background-color: #1877f2;
+      border: none;
+      color: white;
+      padding: 12px 25px;
+      font-size: 1.1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .create-post-form button:hover {
+      background-color: #165eab;
+    }
+
+    .search-container {
+      margin-bottom: 20px;
+    }
+
+    .search-container input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      font-size: 1rem;
+    }
+
+    .search-container input:focus {
+      border-color: #1877f2;
+      outline: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <!-- Search Bar -->
+    <div class="search-container">
+      <input type="text" id="search-input" placeholder="ค้นหาโพสต์..." oninput="searchPosts()">
+    </div>
+
+    <div id="login-form" class="form-container">
+      <h3>กรุณาล็อกอิน</h3>
+      <form id="loginForm">
+        <label for="login-username">ชื่อผู้ใช้</label>
+        <input type="text" id="login-username" name="username" placeholder="กรุณากรอกชื่อผู้ใช้" required>
+        <label for="login-password">รหัสผ่าน</label>
+        <input type="password" id="login-password" name="password" placeholder="กรุณากรอกรหัสผ่าน" required>
+        <button type="submit">ล็อกอิน</button>
+        <p>ยังไม่มีบัญชี? <a href="#" onclick="toggleForms()">สมัครสมาชิก</a></p>
+      </form>
+    </div>
+
+    <div id="register-form" class="form-container" style="display: none;">
+      <h3>สมัครสมาชิก</h3>
+      <form id="registerForm">
+        <label for="register-username">ชื่อผู้ใช้</label>
+        <input type="text" id="register-username" name="username" placeholder="กรุณากรอกชื่อผู้ใช้" required>
+        <label for="register-email">อีเมล</label>
+        <input type="email" id="register-email" name="email" placeholder="กรุณากรอกอีเมล" required>
+        <label for="register-password">รหัสผ่าน</label>
+        <input type="password" id="register-password" name="password" placeholder="กรุณากรอกรหัสผ่าน" required>
+        <button type="submit">สมัครสมาชิก</button>
+        <p>มีบัญชีอยู่แล้ว? <a href="#" onclick="toggleForms()">เข้าสู่ระบบ</a></p>
+      </form>
+    </div>
+
+    <div id="logged-in" class="logged-in" style="display: none;">
+      <h4>ยินดีต้อนรับ <span id="user-name"></span></h4>
+      <p>คุณเข้าสู่ระบบแล้ว</p>
+      <button onclick="showPostForm()">โพสต์ใหม่</button>
+      <button onclick="logout()">ออกจากระบบ</button>
+    </div>
+
+    <div id="create-post-form" class="create-post-form">
+      <h5>สร้างโพสต์ใหม่</h5>
+      <textarea id="post-content" placeholder="เขียนโพสต์..."></textarea>
+      <button onclick="createPost()">โพสต์</button>
+    </div>
+
+    <div id="posts"></div>
+  </div>
+
+  <script>
+    function toggleForms() {
+      var loginForm = document.getElementById("login-form");
+      var registerForm = document.getElementById("register-form");
+      if (loginForm.style.display === "none") {
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+      } else {
+        loginForm.style.display = "none";
+        registerForm.style.display = "block";
+      }
+    }
+
+    document.getElementById("loginForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      var username = document.getElementById("login-username").value;
+      document.getElementById("user-name").textContent = username;
+      document.getElementById("login-form").style.display = "none";
+      document.getElementById("logged-in").style.display = "block";
+    });
+
+    document.getElementById("registerForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      alert("สมัครสมาชิกสำเร็จ");
+      toggleForms();
+    });
+
+    function showPostForm() {
+      document.getElementById('create-post-form').style.display = 'block';
+    }
+
+    function createPost() {
+      var content = document.getElementById('post-content').value;
+      var postDiv = document.createElement('div');
+      postDiv.classList.add('post');
+      postDiv.innerHTML = `
+        <div class="post-header">
+          <strong>${document.getElementById('user-name').textContent}</strong>
+          <button onclick="editPost(this)">แก้ไข</button>
+          <button onclick="deletePost(this)">ลบ</button>
+        </div>
+        <div class="post-content">${content}</div>
+        <div class="post-footer">
+          <button onclick="likePost(this)">👍 ไลค์</button>
+          <span class="like-count">0</span> ไลค์
+        </div>
+        <div class="comment-form">
+          <textarea placeholder="คอมเม้นต์..."></textarea>
+          <button onclick="addComment(this)">คอมเม้นต์</button>
+        </div>
+        <div class="comments-section"></div>
+      `;
+      document.getElementById('posts').prepend(postDiv);
+      document.getElementById('post-content').value = '';  // Clear the textarea
+    }
+
+    function editPost(button) {
+      var postDiv = button.closest('.post');
+      var postContent = postDiv.querySelector('.post-content');
+      var originalContent = postContent.textContent;
+      var textarea = document.createElement('textarea');
+      textarea.value = originalContent;
+
+      postContent.innerHTML = '';
+      postContent.appendChild(textarea);
+
+      button.textContent = 'บันทึก';
+      button.onclick = function() {
+        savePost(postDiv, textarea, button);
+      };
+    }
+
+    function savePost(postDiv, textarea, button) {
+      var newContent = textarea.value.trim();
+      var postContent = postDiv.querySelector('.post-content');
+      postContent.textContent = newContent;
+
+      button.textContent = 'แก้ไข';
+      button.onclick = function() {
+        editPost(button);
+      };
+    }
+
+    function likePost(button) {
+      var likeCountSpan = button.nextElementSibling;
+      var likeCount = parseInt(likeCountSpan.textContent);
+      likeCountSpan.textContent = likeCount + 1;
+    }
+
+    function addComment(button) {
+      var commentTextarea = button.previousElementSibling;
+      var commentText = commentTextarea.value.trim();
+      if (commentText) {
+        var commentDiv = document.createElement('div');
+        commentDiv.classList.add('comment');
+        commentDiv.textContent = commentText;
+        button.closest('.post').querySelector('.comments-section').appendChild(commentDiv);
+        commentTextarea.value = '';
+      }
+    }
+
+    function deletePost(button) {
+      var postDiv = button.closest('.post');
+      postDiv.remove();
+    }
+
+    function searchPosts() {
+      var searchText = document.getElementById('search-input').value.toLowerCase();
+      var posts = document.querySelectorAll('.post');
+      posts.forEach(function(post) {
+        var postContent = post.querySelector('.post-content').textContent.toLowerCase();
+        if (postContent.includes(searchText)) {
+          post.style.display = 'block';
+        } else {
+          post.style.display = 'none';
+        }
+      });
+    }
+
+    function logout() {
+      document.getElementById("logged-in").style.display = "none";
+      document.getElementById("login-form").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
